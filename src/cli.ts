@@ -22,7 +22,7 @@ const client = new GhostAdminAPI({
 
 const publisher = createPublisher(client);
 
-const logger = stoolie(LogLevel.DEBUG);
+const logger = stoolie(LogLevel.INFO);
 
 const watcher = createWatcher(client, publisher, logger);
 
