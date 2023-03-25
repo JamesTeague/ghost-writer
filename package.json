@@ -1,6 +1,9 @@
 {
   "name": "ghost-writer",
   "version": "1.0.0",
+  "scripts": {
+    "test": "echo \"No tests to run.\""
+  },
   "dependencies": {
     "@tryghost/admin-api": "^1.13.2",
     "@tryghost/html-to-mobiledoc": "^2.0.8",
