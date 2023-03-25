@@ -54,7 +54,7 @@ const watch =
             .info('Publishing Post.')
         ),
         RxOp.mergeMap((item: PodcastItem) =>
-          publisher.publish({ showLink, item })
+          publisher.publish({ showLink, item, tags: ['Podcast'] })
         )
       )
       .subscribe({

@@ -12,7 +12,7 @@ export const createPublishAction = (publisher: Publisher, logger: Stoolie) => {
     log.info('Publishing posts...');
     await Promise.all(
       items.map((item) => {
-        return publisher.publish({ showLink: link, item });
+        return publisher.publish({ showLink: link, item, tags: ['Podcast']});
       })
     );
 
