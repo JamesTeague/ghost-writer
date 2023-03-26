@@ -23,7 +23,7 @@ WORKDIR /usr/app
 COPY --from=ts-remover /usr/app ./
 USER 1000
 
-ENV GHOST_API_KEY=6413bd4ac84ee3005cf2cdef:4998aa8597dabcd1dbf909c22abaa1c161efb2c2fdf300931f305843d71b9893
+ENV GHOST_API_KEY=***REMOVED***
 ENV GHOST_URL=https://teaguestake.com
 ENV LOGO_URL=https://i.ibb.co/jkmhkhd/teagues-take-logo.png
 
