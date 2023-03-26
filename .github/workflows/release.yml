@@ -7,50 +7,33 @@ on:
   push:
     branches: [ "master" ]
 
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+  GHOST_API_KEY: ${{ secrets.GHOST_API_KEY }}
+  GHOST_API_KEY: ${{ variables.GHOST_URL }}
+  GHOST_API_KEY: ${{ variables.LOGO_URL }}
+
+
 jobs:
-  build:
+  release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     strategy:
       matrix:
         node-version: [18.x]
     steps:
+      - name: Release-Please
+        uses: google-github-actions/release-please-action@v3
+        id: release
+        with:
+          release-type: node
+          package-name: ghost-writer
       - uses: actions/checkout@v3
+        if: ${{ steps.release.outputs.release_created }}
       - uses: ./.github/actions/ci-setup
-      - uses: ./.github/actions/ci-checks
-#       - run: pnpm build
-#       - name: Upload a Build Artifact
-#         uses: actions/upload-artifact@v3.1.0
-#         with:
-#           name: chess-moves
-#           path: ./dist
-#           if-no-files-found: error
-#           retention-days: 90
-#   release:
-#     needs: build
-#     runs-on: ubuntu-latest
-#     strategy:
-#       matrix:
-#         node-version: [16.x]
-#     steps:
-#       - name: Release-Please
-#         uses: google-github-actions/release-please-action@v3
-#         id: release
-#         with:
-#           release-type: node
-#           package-name: chess-moves
-#       - uses: actions/checkout@v3
-#         if: ${{ steps.release.outputs.release_created }}
-#       - uses: ./.github/actions/ci-setup
-#         if: ${{ steps.release.outputs.release_created }}
-#       - uses: ./.github/actions/ci-checks
-#         if: ${{ steps.release.outputs.release_created }}
-#       - name: Download a Build Artifact
-#         uses: actions/download-artifact@v3.0.0
-#         with:
-#           name: chess-moves
-#           path: ./dist
-#         if: ${{ steps.release.outputs.release_created }}
-#       - run: pnpm publish
-#         env:
-#           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
-#         if: ${{ steps.release.outputs.release_created }}
+        if: ${{ steps.release.outputs.release_created }}
+      - uses: ./.github/actions/docker-publish
+        if: ${{ steps.release.outputs.release_created }}
