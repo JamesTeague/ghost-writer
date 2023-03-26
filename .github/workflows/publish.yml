@@ -1,0 +1,18 @@
+on:
+  workflow_dispatch:
+
+  env:
+    REGISTRY: ghcr.io
+    IMAGE_NAME: ${{ github.repository }}
+    GHOST_API_KEY: ${{ secrets.GHOST_API_KEY }}
+    GHOST_URL: ${{ vars.GHOST_URL }}
+    LOGO_URL: ${{ vars.LOGO_URL }}
+
+  jobs:
+    build-and-publish:
+      runs-on: ubuntu-latest
+      permissions:
+        contents: read
+        packages: write
+      steps:
+        - uses: ./.github/actions/docker-publish
