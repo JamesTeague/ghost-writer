@@ -11,8 +11,8 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
   GHOST_API_KEY: ${{ secrets.GHOST_API_KEY }}
-  GHOST_URL: ${{ variables.GHOST_URL }}
-  LOGO_URL: ${{ variables.LOGO_URL }}
+  GHOST_URL: ${{ vars.GHOST_URL }}
+  LOGO_URL: ${{ vars.LOGO_URL }}
 
 
 jobs:
