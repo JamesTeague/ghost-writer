@@ -24,7 +24,7 @@ COPY --from=ts-remover /usr/app ./
 USER 1000
 
 ENV GHOST_API_KEY=***REMOVED***
-ENV GHOST_URL=https://teaguestake.com
-ENV LOGO_URL=https://i.ibb.co/jkmhkhd/teagues-take-logo.png
+ENV GHOST_URL=***REMOVED***
+ENV LOGO_URL=***REMOVED***
 
 CMD ["cli.js", "watch", "https://feeds.buzzsprout.com/1754222.rss", "300000"]
