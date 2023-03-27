@@ -35,9 +35,13 @@ WORKDIR /usr/app
 COPY --from=ts-remover /usr/app ./
 
 USER 1000
+RUN --mount=type=secret,id=GHOST_API_KEY \
+    --mount=type=secret,id=GHOST_URL \
+    --mount=type=secret,id=LOGO_URL \
+    --mount=type=secret,id=RSS_FEED \
+    export GHOST_API_KEY=$(cat /run/secrets/GHOST_API_KEY) && \
+    export GHOST_URL=$(cat /run/secrets/GHOST_URL) && \
+    export LOGO_URL=$(cat /run/secrets/LOGO_URL) && \
+    export RSS_FEED=$(cat /run/secrets/RSS_FEDD)
 
-ENV GHOST_API_KEY=$GHOST_API_KEY
-ENV GHOST_URL=$GHOST_URL
-ENV LOGO_URL=$LOGO_URL
-
-CMD ["cli.js", "watch", "$RSS_FEED", "300000"]
+CMD ["cli.js", "watch", "${RSS_FEED}", "300000"]

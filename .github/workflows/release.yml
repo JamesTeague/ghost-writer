@@ -13,7 +13,7 @@ env:
   GHOST_API_KEY: ${{ secrets.GHOST_API_KEY }}
   GHOST_URL: ${{ vars.GHOST_URL }}
   LOGO_URL: ${{ vars.LOGO_URL }}
-
+  RSS_FEED: ${{ vars.RSS_FEED }}
 
 jobs:
   release:
@@ -36,4 +36,6 @@ jobs:
       - uses: ./.github/actions/ci-setup
         if: ${{ steps.release.outputs.release_created }}
       - uses: ./.github/actions/docker-publish
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
         if: ${{ steps.release.outputs.release_created }}

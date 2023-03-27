@@ -1,6 +1,6 @@
 name: 'Docker publish'
 inputs:
-  token:  # id of input
+  token:
     description: 'auth token'
     required: true
     default: ''
@@ -21,9 +21,14 @@ runs:
         images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
     - name: Build and push Docker image
-      uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+      uses: docker/build-push-action@v2
       with:
         context: .
         push: true
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
+        secrets: |
+          "GHOST_API_KEY=${{ env.GHOST_API_KEY }}"
+          "GHOST_URL=${{ env.GHOST_URL }}"
+          "LOGO_URL=${{ env.LOGO_URL }}"
+          "RSS_FEED=${{ env.RSS_FEED}}"
