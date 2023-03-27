@@ -42,6 +42,6 @@ RUN --mount=type=secret,id=GHOST_API_KEY \
     export GHOST_API_KEY=$(cat /run/secrets/GHOST_API_KEY) && \
     export GHOST_URL=$(cat /run/secrets/GHOST_URL) && \
     export LOGO_URL=$(cat /run/secrets/LOGO_URL) && \
-    export RSS_FEED=$(cat /run/secrets/RSS_FEDD)
+    export RSS_FEED=$(cat /run/secrets/RSS_FEED)
 
 CMD ["cli.js", "watch", "${RSS_FEED}", "300000"]
