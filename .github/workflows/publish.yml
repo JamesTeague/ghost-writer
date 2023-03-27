@@ -9,6 +9,7 @@ env:
   GHOST_API_KEY: ${{ secrets.GHOST_API_KEY }}
   GHOST_URL: ${{ vars.GHOST_URL }}
   LOGO_URL: ${{ vars.LOGO_URL }}
+  RSS_FEED: ${{ vars.RSS_FEED }}
 
 jobs:
   build-and-publish:
