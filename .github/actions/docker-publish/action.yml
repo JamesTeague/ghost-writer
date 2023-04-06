@@ -4,22 +4,6 @@ inputs:
     description: 'auth token'
     required: true
     default: ''
-  ghost-api-key:
-    description: 'ghost key'
-    required: true
-    default: ''
-  ghost-url:
-    description: 'ghost url'
-    required: true
-    default: ''
-  logo-url:
-    description: 'logo'
-    required: true
-    default: ''
-  rss-feed:
-    description: 'rss feed'
-    required: true
-    default: ''
 runs:
   using: 'composite'
   steps:
@@ -43,8 +27,3 @@ runs:
         push: true
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
-        secrets: |
-          "GHOST_API_KEY=${{ inputs.ghost-api-key }}"
-          "GHOST_URL=${{ inputs.ghost-url }}"
-          "LOGO_URL=${{ inputs.logo-url }}"
-          "RSS_FEED=${{ inputs.rss-feed }}"
