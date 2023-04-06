@@ -3,7 +3,7 @@ import { Feed } from '../types';
 import { Stoolie } from 'stoolie/dist/logger';
 
 export const createFindAction = (logger: Stoolie) => {
-  return async (rssFeed: string, title: string) => {
+  return async (title: string, rssFeed: string) => {
     const log = logger.withFields({ title, rssFeed });
 
     log.info('Looking for episode.');

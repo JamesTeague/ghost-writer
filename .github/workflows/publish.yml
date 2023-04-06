@@ -18,7 +18,3 @@ jobs:
       - uses: ./.github/actions/docker-publish
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          ghost-api-key: ${{ secrets.GHOST_API_KEY }}
-          ghost-url: ${{ vars.GHOST_URL }}
-          logo-url: ${{ vars.LOGO_URL }}
-          rss-feed: ${{ vars.RSS_FEED }}
