@@ -3,7 +3,7 @@ import { Watcher } from '../types';
 
 export const createWatchAction =
   (watcher: Watcher, logger: Stoolie) =>
-  async (rssFeed: string, intervalMs: number) => {
+  async (intervalMs: number, rssFeed: string, ) => {
     const log = logger.withFields({ rssFeed, intervalMs });
     log.verbose('Track command called.');
     log.info('Watching for new posts...');
