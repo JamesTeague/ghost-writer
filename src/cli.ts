@@ -91,7 +91,7 @@ watchCommand
 program
   .name('ghost-writer')
   .description('CLI to manage posts on a Ghost blog')
-  .version('1.0.0')
+  .version('1.0.2')
   .addCommand(publishCommand)
   .addCommand(deleteCommand)
   .addCommand(findCommand)

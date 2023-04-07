@@ -3,7 +3,6 @@ import * as RxOp from 'rxjs/operators';
 import {
   Feed,
   PodcastItem,
-  Post,
   Publisher,
   Watcher,
   WatchRequest,
@@ -24,11 +23,9 @@ export const createWatcher = (
 const watch =
   (client: any, publisher: Publisher, logger: Stoolie) =>
   async ({ rssFeed, frequencyMs }: WatchRequest): Promise<Subscription> => {
-    const mostRecentPost = await getMostRecentPost(client);
-    const lastReadDate = new Date(mostRecentPost.published_at);
-
-    const log = logger.withFields({ lastReadDate: lastReadDate.toISOString() });
+    let lastReadDate: Date;
     let showLink: string;
+    const log = logger;
 
     const exit = new Subject();
     ['SIGINT', 'SIGTERM', 'SIGHUP'].forEach((signal) => {
@@ -38,6 +35,9 @@ const watch =
     return interval(frequencyMs)
       .pipe(
         RxOp.takeUntil(exit),
+        RxOp.mergeMap(() => getMostRecentPostDate(client)),
+        RxOp.tap((mostRecentPostDate) => { lastReadDate = mostRecentPostDate }),
+        RxOp.tap(() => { log.withFields({ lastReadDate }).info('Checking for new posts...')}),
         RxOp.mergeMap(() => parse(rssFeed)),
         RxOp.tap(({ link }) => {
           showLink = link;
@@ -68,6 +68,7 @@ const watch =
       });
   };
 
-const getMostRecentPost = async (client: any): Promise<Post> => {
-  return (await client.posts.browse({ limit: 1 }))[0];
+const getMostRecentPostDate = async (client: any): Promise<Date> => {
+  const mostRecentPost = (await client.posts.browse({ limit: 1 }))[0];
+  return new Date(mostRecentPost.published_at);
 };
