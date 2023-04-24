@@ -1,7 +1,12 @@
-import { createCommand, InvalidArgumentError, program } from "commander";
-import stoolie, { LogLevel } from "stoolie";
-import { createDeleteAction, createFindAction, createPublishAction, createWatchAction } from "./commands";
-import { createPublisher, createWatcher } from "./services";
+import { createCommand, InvalidArgumentError, program } from 'commander';
+import stoolie, { LogLevel } from 'stoolie';
+import {
+  createDeleteAction,
+  createFindAction,
+  createPublishAction,
+  createWatchAction,
+} from './commands';
+import { createPublisher, createWatcher } from './services';
 
 const GhostAdminAPI = require('@tryghost/admin-api');
 const publishCommand = createCommand('publish');
@@ -19,21 +24,25 @@ const ensureRequiredValues = () => {
     },
     optional: {
       LOGO_URL: process.env.LOGO_URL,
-      POLLING_INTERVAL: process.env.POLLING_INTERVAL
-    }
-  })
+      POLLING_INTERVAL: process.env.POLLING_INTERVAL,
+    },
+  });
 
   log.info('Checking required values.');
 
-  if (!process.env.GHOST_URL || !process.env.GHOST_API_KEY || !process.env.RSS_FEED) {
+  if (
+    !process.env.GHOST_URL ||
+    !process.env.GHOST_API_KEY ||
+    !process.env.RSS_FEED
+  ) {
     log.error('Missing required variable.');
     process.exit(9);
   }
 
   if (!process.env.LOGO_URL || !process.env.POLLING_INTERVAL) {
-    log.warn("Missing optional variable.");
+    log.warn('Missing optional variable.');
   }
-}
+};
 
 ensureRequiredValues();
 
@@ -48,11 +57,11 @@ const RSS_FEED = process.env.RSS_FEED;
 const publisher = createPublisher(client);
 const watcher = createWatcher(client, publisher, logger);
 
-const parseIntervalFromArgument = (value: string = "60") => {
+const parseIntervalFromArgument = (value: string = '60') => {
   const parsedValue = parseInt(value, 10);
 
   if (isNaN(parsedValue)) {
-    throw new InvalidArgumentError("Not a number.");
+    throw new InvalidArgumentError('Not a number.');
   }
 
   return parsedValue * 60000;
@@ -86,9 +95,9 @@ watchCommand
   .action(createWatchAction(watcher, logger));
 
 program
-  .name("ghost-writer")
-  .description("CLI to manage posts on a Ghost blog")
-  .version("1.0.3")
+  .name('ghost-writer')
+  .description('CLI to manage posts on a Ghost blog')
+  .version('1.0.3')
   .addCommand(publishCommand)
   .addCommand(deleteCommand)
   .addCommand(findCommand)

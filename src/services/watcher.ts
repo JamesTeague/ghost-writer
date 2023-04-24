@@ -1,8 +1,8 @@
-import { interval, Subject, Subscription } from "rxjs";
-import * as RxOp from "rxjs/operators";
-import { Feed, PodcastItem, Publisher, Watcher, WatchRequest } from "../types";
-import { parse } from "rss-to-json";
-import { Stoolie } from "stoolie/dist/logger";
+import { interval, Subject, Subscription } from 'rxjs';
+import * as RxOp from 'rxjs/operators';
+import { Feed, PodcastItem, Publisher, Watcher, WatchRequest } from '../types';
+import { parse } from 'rss-to-json';
+import { Stoolie } from 'stoolie/dist/logger';
 
 export const createWatcher = (
   client: any,
@@ -30,8 +30,12 @@ const watch =
       .pipe(
         RxOp.takeUntil(exit),
         RxOp.mergeMap(() => getMostRecentPostDate(client)),
-        RxOp.tap((mostRecentPostDate) => { lastReadDate = mostRecentPostDate }),
-        RxOp.tap(() => { log.withFields({ lastReadDate }).info('Checking for new posts...')}),
+        RxOp.tap((mostRecentPostDate) => {
+          lastReadDate = mostRecentPostDate;
+        }),
+        RxOp.tap(() => {
+          log.withFields({ lastReadDate }).info('Checking for new posts...');
+        }),
         RxOp.mergeMap(() => parse(rssFeed)),
         RxOp.tap(({ link }) => {
           showLink = link;
@@ -54,10 +58,10 @@ const watch =
       .subscribe({
         next() {},
         error(error: Error) {
-          log.withError(error).error("Fatal application error.");
+          log.withError(error).error('Fatal application error.');
         },
         complete() {
-          log.info("Application exited normally.");
+          log.info('Application exited normally.');
         },
       });
   };
