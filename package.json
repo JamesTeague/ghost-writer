@@ -3,6 +3,7 @@
   "version": "1.0.2",
   "scripts": {
     "build": "tsc",
+    "prettier": "prettier --write ./src",
     "test": "echo \"No tests to run.\""
   },
   "dependencies": {

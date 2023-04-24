@@ -37,4 +37,4 @@ COPY --from=ts-remover /usr/app ./
 
 USER 1000
 
-CMD ["cli.js", "watch", "300000"]
+CMD ["cli.js", "watch"]

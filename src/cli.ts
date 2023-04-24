@@ -1,4 +1,4 @@
-import { program, createCommand, InvalidArgumentError } from 'commander';
+import { createCommand, InvalidArgumentError, program } from 'commander';
 import stoolie, { LogLevel } from 'stoolie';
 import {
   createDeleteAction,
@@ -24,20 +24,25 @@ const ensureRequiredValues = () => {
     },
     optional: {
       LOGO_URL: process.env.LOGO_URL,
-    }
-  })
+      POLLING_INTERVAL: process.env.POLLING_INTERVAL,
+    },
+  });
 
   log.info('Checking required values.');
 
-  if (!process.env.GHOST_URL || !process.env.GHOST_API_KEY || !process.env.RSS_FEED) {
+  if (
+    !process.env.GHOST_URL ||
+    !process.env.GHOST_API_KEY ||
+    !process.env.RSS_FEED
+  ) {
     log.error('Missing required variable.');
     process.exit(9);
   }
 
-  if (!process.env.LOGO_URL) {
-    log.warn('Missing optional variable.')
+  if (!process.env.LOGO_URL || !process.env.POLLING_INTERVAL) {
+    log.warn('Missing optional variable.');
   }
-}
+};
 
 ensureRequiredValues();
 
@@ -52,13 +57,14 @@ const RSS_FEED = process.env.RSS_FEED;
 const publisher = createPublisher(client);
 const watcher = createWatcher(client, publisher, logger);
 
-const parseIntFromArgument = (value: string) => {
+const parseIntervalFromArgument = (value: string = '60') => {
   const parsedValue = parseInt(value, 10);
 
   if (isNaN(parsedValue)) {
     throw new InvalidArgumentError('Not a number.');
   }
-  return parsedValue;
+
+  return parsedValue * 60000;
 };
 
 deleteCommand
@@ -83,7 +89,7 @@ watchCommand
   .argument(
     '<intervalMs>',
     'interval to fetch in milliseconds',
-    parseIntFromArgument
+    parseIntervalFromArgument(process.env.POLLING_INTERVAL)
   )
   .argument('[rssFeed]', 'Feed to Podcast', RSS_FEED)
   .action(createWatchAction(watcher, logger));
@@ -91,7 +97,7 @@ watchCommand
 program
   .name('ghost-writer')
   .description('CLI to manage posts on a Ghost blog')
-  .version('1.0.2')
+  .version('1.0.3')
   .addCommand(publishCommand)
   .addCommand(deleteCommand)
   .addCommand(findCommand)
