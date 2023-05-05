@@ -87,7 +87,7 @@ findCommand
 watchCommand
   .description('Watch Rss Feed for new episodes and publish them as posts')
   .argument(
-    '<intervalMs>',
+    '[intervalMs]',
     'interval to fetch in milliseconds',
     parseIntervalFromArgument(process.env.POLLING_INTERVAL)
   )
@@ -97,7 +97,7 @@ watchCommand
 program
   .name('ghost-writer')
   .description('CLI to manage posts on a Ghost blog')
-  .version('1.0.3')
+  .version('1.0.4')
   .addCommand(publishCommand)
   .addCommand(deleteCommand)
   .addCommand(findCommand)
