@@ -1,6 +1,6 @@
 {
   "name": "ghost-writer",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "scripts": {
     "build": "tsc",
     "prettier": "prettier --write ./src",
