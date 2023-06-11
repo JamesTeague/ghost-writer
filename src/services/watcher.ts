@@ -2,24 +2,21 @@ import { interval, Subject, Subscription } from 'rxjs';
 import * as RxOp from 'rxjs/operators';
 import { Feed, PodcastItem, Publisher, Watcher, WatchRequest } from '../types';
 import { parse } from 'rss-to-json';
-import { Stoolie } from 'stoolie/dist/logger';
 
 export const createWatcher = (
   client: any,
   publisher: Publisher,
-  logger: Stoolie
 ): Watcher => {
   return {
-    watch: watch(client, publisher, logger),
+    watch: watch(client, publisher),
   };
 };
 
 const watch =
-  (client: any, publisher: Publisher, logger: Stoolie) =>
+  (client: any, publisher: Publisher) =>
     async ({ rssFeed, frequencyMs }: WatchRequest): Promise<Subscription> => {
       let lastReadDate: Date;
       let showLink: string;
-      const log = logger;
 
       const exit = new Subject();
       ['SIGINT', 'SIGTERM', 'SIGHUP'].forEach((signal) => {
@@ -34,7 +31,7 @@ const watch =
             lastReadDate = mostRecentPostDate;
           }),
           RxOp.tap(() => {
-            log.withFields({ lastReadDate }).info('Checking for new posts...');
+            console.log('Checking for new posts...', { lastReadDate });
           }),
           RxOp.mergeMap(() => parse(rssFeed)),
           RxOp.tap(({ link }) => {
@@ -47,9 +44,7 @@ const watch =
               new Date(published).getTime() > lastReadDate.getTime()
           ),
           RxOp.tap(({ title, published }) =>
-            log
-              .withFields({ title, published: new Date(published).toISOString() })
-              .info('Publishing Post.')
+            console.log('Publishing Post.', { title, published: new Date(published).toISOString() })
           ),
           RxOp.mergeMap((item: PodcastItem) =>
             publisher.publish({ showLink, item, tags: ['Podcast'] })
@@ -58,10 +53,10 @@ const watch =
         .subscribe({
           next() { },
           error(error: Error) {
-            log.withError(error).error('Fatal application error.');
+            console.error(error, 'Fatal application error');
           },
           complete() {
-            log.info('Application exited normally.');
+            console.info('Application exited normally.');
           },
         });
     };
