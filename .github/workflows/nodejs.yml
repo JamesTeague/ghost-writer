@@ -17,11 +17,24 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: base
+        working-directory: ./site-writer
     strategy:
       matrix:
         node-version: [18.x]
     steps:
+     - name: Setup pnpm
+       uses: pnpm/action-setup@v2.2.2
      - uses: actions/checkout@v3
-     - run: cd site-writer
-     - uses: ./.github/actions/ci-setup
-     - uses: ./.github/actions/ci-checks
+     - name: Run Tests
+       run: pnpm test
+     - name: Use Node.js ${{ matrix.node-version }}
+       uses: actions/setup-node@v3
+       with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'pnpm'
+        registry-url: 'https://registry.npmjs.org'
+     - name: Install Dependencies
+       run: pnpm i --ignore-scripts
