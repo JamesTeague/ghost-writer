@@ -27,7 +27,6 @@ jobs:
       matrix:
         node-version: [18.x]
     steps:
-      - run: cd site-writer
       - name: Release-Please
         uses: google-github-actions/release-please-action@v3
         id: release
@@ -35,6 +34,8 @@ jobs:
           release-type: node
           package-name: ghost-writer
       - uses: actions/checkout@v3
+        if: ${{ steps.release.outputs.release_created }}
+      - run: cd site-writer
         if: ${{ steps.release.outputs.release_created }}
       - uses: ./.github/actions/ci-setup
         if: ${{ steps.release.outputs.release_created }}

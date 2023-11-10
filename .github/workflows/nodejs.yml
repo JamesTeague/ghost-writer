@@ -21,7 +21,7 @@ jobs:
       matrix:
         node-version: [18.x]
     steps:
-     - run: cd site-writer
      - uses: actions/checkout@v3
+     - run: cd site-writer
      - uses: ./.github/actions/ci-setup
      - uses: ./.github/actions/ci-checks

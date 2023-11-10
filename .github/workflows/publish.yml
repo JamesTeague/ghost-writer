@@ -14,8 +14,8 @@ jobs:
       contents: read
       packages: write
     steps:
-      - run: cd site-writer
       - uses: actions/checkout@v3
+      - run: cd site-writer
       - uses: ./.github/actions/docker-publish
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
