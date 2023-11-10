@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        shell: base
+        shell: bash
         working-directory: ./site-writer
     strategy:
       matrix:
