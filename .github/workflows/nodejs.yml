@@ -31,6 +31,7 @@ jobs:
        with:
          version: 8
          run_install: |
+           - cwd: ./site-writer
            - args: [--ignore-scripts]
          package_json_file: ./site-writer/package.json
      - name: Use Node.js ${{ matrix.node-version }}
