@@ -6,8 +6,12 @@ name: Node CI
 on:
   push:
     branches-ignore: [ "master" ]
+    paths:
+      - 'site-writer/**'
   pull_request:
     branches: [ "**" ]
+    paths:
+      - 'site-writer/**'
   workflow_dispatch:
 
 jobs:
@@ -17,6 +21,7 @@ jobs:
       matrix:
         node-version: [18.x]
     steps:
+     - run: cd site-writer
      - uses: actions/checkout@v3
      - uses: ./.github/actions/ci-setup
      - uses: ./.github/actions/ci-checks

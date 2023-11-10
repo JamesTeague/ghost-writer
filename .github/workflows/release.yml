@@ -6,6 +6,8 @@ name: Release
 on:
   push:
     branches: [ "master" ]
+    paths:
+      - 'site-writer/**'
 
 env:
   REGISTRY: ghcr.io
@@ -25,6 +27,7 @@ jobs:
       matrix:
         node-version: [18.x]
     steps:
+      - run: cd site-writer
       - name: Release-Please
         uses: google-github-actions/release-please-action@v3
         id: release
